@@ -1,6 +1,6 @@
 # Building a Computer
 
-Over Summer in 2021, while I had a free month before starting classes at Columbia University, I built a HACK Computer. I learned the deep fundamentals of Computer Architecture from "The Elements of Computing Systems" a book by Noam Nisan, and used this information to build the computer and a high level language, Jack, from the ground up. I gained an appreciation for the beauty of Hardware Design and it's integration with Software. This project was without a doubt one of the most rewarding and exciting experiences I've had in Computer Science. 
+Over Summer in 2021, while I had a free month before starting classes at Columbia University, I built a HACK Computer. I learned the deep fundamentals of Computer Architecture from "The Elements of Computing Systems" a book by Noam Nisan, and used this information to build the computer and a high level language, Jack, from the ground up. I gained an appreciation for the beauty of Hardware Design and its integration with Software Design. This project was without a doubt one of the most rewarding and exciting experiences I've had in Computer Science. 
 
 By the end of this project, I had built a HACK computer, had learned symbolic and binary Hack language (Assembly code), the VM language, and the Jack language (similar to Java), and had built a compiler, VM Translator, and Assembler to completely connect the high level software language to the deep levels of the hardware. 
 

@@ -1,0 +1,143 @@
+//Implements a graphical player
+
+class OrbHunter{
+	field int x, y;
+	field int size;
+	field int dirFacing;
+
+
+	constructor OrbHunter new (int Ax, int Ay){
+		let x = Ax;
+		let y = Ay;
+		let size = 16;
+		let dirFacing = 0; //allows to change sprite when change direction
+		do draw();
+		return this;
+	}
+
+	//function to recycle memory
+	method void dispose(){
+		do Memory.deAlloc(this);
+		return;
+	}
+
+	//allows other classes to access player position 
+	method int getX(){
+		return x;
+	}
+	method int getY(){
+		return y;
+	}
+
+	//draws sprite depending on direction facing
+	//integers to poke in memory found with provided bitmapping tool
+	method void draw(){
+		var int location, memAddress;
+
+		let location = (x/16)+(y*32);
+		let memAddress = 16384+location;
+
+		if(dirFacing = 0){
+			do Memory.poke(memAddress+0, 1024);
+			do Memory.poke(memAddress+32, 3072);
+			do Memory.poke(memAddress+64, 24128);
+			do Memory.poke(memAddress+96, 16256);
+			do Memory.poke(memAddress+128, 5888);
+			do Memory.poke(memAddress+160, 4080);
+			do Memory.poke(memAddress+192, 988);
+			do Memory.poke(memAddress+224, -30745);
+			do Memory.poke(memAddress+256, -4368);
+			do Memory.poke(memAddress+288, 31984);
+			do Memory.poke(memAddress+320, 7920);
+			do Memory.poke(memAddress+352, 2016);
+			do Memory.poke(memAddress+384, 510);
+			do Memory.poke(memAddress+416, 5053);
+			do Memory.poke(memAddress+448, 7966);
+			do Memory.poke(memAddress+480, 1557);
+		}
+		if(dirFacing = 1){
+			do Memory.poke(memAddress+0, 32);
+			do Memory.poke(memAddress+32, 48);
+			do Memory.poke(memAddress+64, 634);
+			do Memory.poke(memAddress+96, 508);
+			do Memory.poke(memAddress+128, 232);
+			do Memory.poke(memAddress+160, 4080);
+			do Memory.poke(memAddress+192, 15296);
+			do Memory.poke(memAddress+224, -6175);
+			do Memory.poke(memAddress+256, 3959);
+			do Memory.poke(memAddress+288, 3902);
+			do Memory.poke(memAddress+320, 3960);
+			do Memory.poke(memAddress+352, 2016);
+			do Memory.poke(memAddress+384, 32640);
+			do Memory.poke(memAddress+416, -16936);
+			do Memory.poke(memAddress+448, 30968);
+			do Memory.poke(memAddress+480, -22432);
+		}
+		return;
+	}
+
+	//erases sprite every time sprite moves
+	method void erase(){
+		var int location, memAddress;
+		
+		let location = (x/16)+(y*32);
+
+		let memAddress = 16384+location;
+
+		do Memory.poke(memAddress+0, 0);
+		do Memory.poke(memAddress+32, 0);
+		do Memory.poke(memAddress+64, 0);
+		do Memory.poke(memAddress+96, 0);
+		do Memory.poke(memAddress+128, 0);
+		do Memory.poke(memAddress+160, 0);
+		do Memory.poke(memAddress+192, 0);
+		do Memory.poke(memAddress+224, 0);
+		do Memory.poke(memAddress+256, 0);
+		do Memory.poke(memAddress+288, 0);
+		do Memory.poke(memAddress+320, 0);
+		do Memory.poke(memAddress+352, 0);
+		do Memory.poke(memAddress+384, 0);
+		do Memory.poke(memAddress+416, 0);
+		do Memory.poke(memAddress+448, 0);
+		do Memory.poke(memAddress+480, 0);
+
+		return;
+	}
+
+	//moves sprite in direction by checking boundaries, erasing old sprite, changing x/y, then drawing new sprite
+	method void moveUp() {
+		if (y>32){
+			do erase();
+			let y = y-2;
+			do draw();
+		}
+		return;
+	}
+	method void moveDown() {
+		if ((y+size)<255){
+			do erase();
+			let y = y+2;
+			do draw();
+		}
+		return;
+	}
+	method void moveLeft() {
+		if (x>1){
+			do erase();
+			let x = x-2;
+			let dirFacing = 1;
+			do draw();
+		}
+		return;
+	}
+	method void moveRight() {
+		if ((x+size)<512){
+			do erase();
+			let x = x+2;
+			let dirFacing = 0;
+			do draw();
+		}
+		return;
+	}
+
+}

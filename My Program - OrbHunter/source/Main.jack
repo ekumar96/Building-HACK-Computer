@@ -1,0 +1,10 @@
+//Main class of the Orb hunter game
+class Main {
+	function void main(){
+		var OrbHunterGame game;
+		let game = OrbHunterGame.new(); //creates a new game
+		do game.run(); //calls it to run
+		do game.dispose(); //after completed running, recycles memory
+		return;
+	}
+}

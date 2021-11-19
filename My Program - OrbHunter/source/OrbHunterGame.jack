@@ -1,0 +1,172 @@
+//Implements an Orb Hunter game
+class OrbHunterGame {
+
+	field OrbHunter player; //the player and target
+	field OrbTarget orb;
+
+	field int direction; //the current direction, 0=none, 1=up, 2=down, 3=left, 4=right
+
+	field int score; //variables for keeping track of score/time
+	field int time;
+	field int counter;
+
+	constructor OrbHunterGame new() {
+		//initializes player and target in certain positions
+		let player = OrbHunter.new(251,230);
+		let orb = OrbTarget.new(251,123);
+
+		let direction = 0;
+		let score = 0;
+		let time = 0;
+		let counter = 0;
+
+		//prints header
+		do Output.printString("    Welcome Orb Hunter. Collect the Orbs as fast as you can!");
+		do Output.println();
+		do writeHeading(score);
+		do writeTime();
+
+		do Screen.setColor(true);
+		do Screen.drawLine(1, 26, 510, 26);
+		do Screen.drawLine(1, 29, 510, 29);
+		return this;
+	}
+
+	//function to recycle memory
+	method void dispose() {
+		do player.dispose();
+		do orb.dispose();
+		do Memory.deAlloc(this);
+		return;
+	}
+
+	//writes score and timer heading
+	method void writeHeading(int score){
+		var int i;
+		let i = 0;
+
+		if(~(score=0)){
+			while(i<47){
+				do Output.backSpace();
+				let i = i+1;
+			}
+			let i = 0;
+		}
+		do Output.printString("                   Score: ");
+		do Output.printInt(score);
+		do Output.printString("          Timer:    ");
+		return;
+	}
+
+	//as time needs to be updated often, seperate mehtod created
+	method void writeTime(){
+		do Output.backSpace();
+		//diff amount of backspaces depending on number of digits
+		if(time>9){
+			do Output.backSpace();
+		}
+		if(time>99){
+			do Output.backSpace();
+		}
+		if(time>999){
+			do Output.backSpace();
+		}
+		do Output.printInt(time);
+		return;
+	}
+
+	method void moveOrbHunter(){
+		//moves hunter in desired direction 
+		if (direction = 1){do player.moveUp();}
+		if (direction = 2){do player.moveDown();}
+		if (direction = 3){do player.moveLeft();}
+		if (direction = 4){do player.moveRight();}
+		let counter = counter + 1;
+		let time = counter/80;
+		do Sys.wait(5);
+		return;
+	}
+
+	//checks if player has touched an orb hitbox
+	method int checkTouch(){
+		var int tscore;
+		if((player.getX() > (orb.getX()-25)) & (player.getX() < (orb.getX()+20)) & (player.getY() > (orb.getY()-25)) & (player.getY() < (orb.getY()+10))) {
+			//if so, increases score, moves orb, and changes heading
+			let tscore = orb.transportOrb();
+			do writeHeading(tscore);
+			do writeTime();
+			return tscore;
+
+		}
+		return score;
+	}
+
+	//runs whole game
+	method void run(){
+		var char key;
+		var boolean exit;
+		let exit = false;
+
+		while(~exit){
+			//stuck in this loop while player has not exited
+
+			while (key = 0){
+				//stuck in this while loop while key is not pressed
+
+				let key = Keyboard.keyPressed();
+				do moveOrbHunter();
+				do orb.draw();
+				let score = checkTouch();
+				do writeTime(); //writes time every cycle
+
+				//if player gets all orbs, player wins and exits
+				if(score > 8) {
+					let key = 1;
+					let exit = true;
+				}
+			}
+			//continuously checks keys (gets out of above while loop if key is pressed)
+			if(key = 81) {let exit = true;}      //q key to quit
+			if(key = 131) {let direction = 1;}   //up arrow
+			if(key = 133) {let direction = 2;}   //down arrow
+			if(key = 130) {let direction = 3;}   //left arrow
+			if(key = 132) {let direction = 4;}   //right arrow
+
+			while (~(key = 0)){
+				//stuck in this while loop while key is pressed
+
+				let key = Keyboard.keyPressed();
+				do moveOrbHunter();
+				do orb.draw();
+				let score = checkTouch();
+				do writeTime();
+
+				if(score > 8) {
+					let key = 0;
+					let exit = true;
+				}
+			}
+		}
+
+		//exit statements
+		do Output.println();
+		do Output.println();
+		do Output.println();
+		do Output.println();
+		do Output.println();
+		do Output.printString("                       Congrats, you won!");
+		do Output.println();
+		do Output.printString("                         Final Time: ");
+		do Output.printInt(time);
+		do Output.println();
+		do Output.println();
+		do Output.println();
+		do Output.printString("                     Press any key to quit");
+
+		do Sys.wait(50);
+		while (key = 0){
+			let key = Keyboard.keyPressed();
+		}
+		return;
+	}
+}

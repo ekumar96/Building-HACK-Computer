@@ -1,0 +1,97 @@
+//Implements a graphical Orb target
+
+class OrbTarget{
+	field int x, y;
+	field int orbCount;
+
+	constructor OrbTarget new (int Ax, int Ay){
+		//constructor sets all parameters of new orb
+		let x = Ax;
+		let y = Ay;
+		let orbCount = 0;
+		do draw();
+		return this;
+	}
+
+	//recycles memory
+	method void dispose(){
+		do Memory.deAlloc(this);
+		return;
+	}
+
+	//so other classes can have access to orb x and y
+	method int getX(){
+		return x;
+	}
+	method int getY(){
+		return y;
+	}
+
+	//orb is series of circles
+	method void draw(){
+		do Screen.setColor(true);
+		do Screen.drawCircle(x,y,10);
+		do Screen.setColor(false);
+		do Screen.drawCircle(x,y,8);
+		do Screen.setColor(true);
+		do Screen.drawCircle(x,y,7);
+		do Screen.setColor(false);
+		do Screen.drawCircle(x,y,5);
+		do Screen.setColor(true);
+		do Screen.drawCircle(x,y,4);
+		do Screen.setColor(false);
+		do Screen.drawCircle(x,y,1);
+		return;
+	}
+
+	//erases orb when moving it
+	method void erase(){
+		do Screen.setColor(false);
+		do Screen.drawCircle(x,y,10);
+		return;
+	}
+
+	//when player has touched orb, it transports to a new location
+	method int transportOrb(){
+		do erase();
+		let orbCount = orbCount + 1;
+		if(orbCount = 1){
+			let x = 124;
+			let y = 81;
+		}
+		if(orbCount = 2){
+			let x = 377;
+			let y = 81;
+		}
+		if(orbCount = 3){
+			let x = 377;
+			let y = 200;
+		}
+		if(orbCount = 4){
+			let x = 124;
+			let y = 200;
+		}
+		if(orbCount = 5){
+			let x = 90;
+			let y = 143;
+		}
+		if(orbCount = 6){
+			let x = 251;
+			let y = 65;
+		}
+		if(orbCount = 7){
+			let x = 400;
+			let y = 143;
+		}
+		if(orbCount = 8){
+			let x = 251;
+			let y = 220;
+		}
+		if(orbCount = 9){
+			let x = 251;
+			let y = 143;
+		}
+		
+		return orbCount;
+	}
+}
